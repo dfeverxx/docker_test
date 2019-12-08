@@ -1,0 +1,21 @@
+version: '2'
+services:
+  app:
+    build:
+      context: ./phpdoc
+      dockerfile: app.dockerfile
+    working_dir: /var/www/html
+    volumes:
+      - ./web:/var/www/html
+    environment:
+      -"DB_PORT-3306"
+      -"DB_HOST=database"
+  web:
+    build:
+      context: ./nginx
+      dockerfile: nginx.dockerfile
+    working_dir: /var/www/html
+    volumes_from:
+      - app
+      ports:
+      - 8080:80
